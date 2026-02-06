@@ -138,30 +138,38 @@
     });
 
     // ================================================
-    // Auto-play First Testimonial Video on Scroll (muted)
+    // Auto-play Testimonial Videos on Scroll (staggered)
     // ================================================
-    const firstTestimonialCard = document.querySelector('.testimonial-card');
-    
-    if (firstTestimonialCard) {
-        const firstVideo = firstTestimonialCard.querySelector('video');
-        const firstPlayBtn = firstTestimonialCard.querySelector('.play-testimonial');
-        let hasAutoPlayed = false;
-        
-        const videoObserver = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting && !hasAutoPlayed && firstVideo) {
-                    firstVideo.muted = true;
-                    firstVideo.play();
-                    if (firstPlayBtn) {
-                        firstPlayBtn.classList.add('playing');
+    const videoAutoplayObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            const video = entry.target.querySelector('video');
+            const playBtn = entry.target.querySelector('.play-testimonial');
+            
+            if (entry.isIntersecting && video) {
+                // Small delay based on card index for staggered effect
+                const cardIndex = Array.from(testimonialCards).indexOf(entry.target);
+                const delay = cardIndex * 200; // 200ms stagger
+                
+                setTimeout(() => {
+                    video.muted = true;
+                    video.play().catch(() => {});
+                    if (playBtn) {
+                        playBtn.classList.add('playing');
                     }
-                    hasAutoPlayed = true;
+                }, delay);
+            } else if (!entry.isIntersecting && video) {
+                // Pause when out of view
+                video.pause();
+                if (playBtn) {
+                    playBtn.classList.remove('playing');
                 }
-            });
-        }, { threshold: 0.3 });
-        
-        videoObserver.observe(firstTestimonialCard);
-    }
+            }
+        });
+    }, { threshold: 0.3 });
+    
+    testimonialCards.forEach(card => {
+        videoAutoplayObserver.observe(card);
+    });
 
 
     // ================================================
