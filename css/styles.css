@@ -834,6 +834,43 @@ section {
     pointer-events: none;
 }
 
+/* Testimonial Sound Toggle */
+.testimonial-sound-toggle {
+    position: absolute;
+    bottom: 12px;
+    right: 12px;
+    width: 36px;
+    height: 36px;
+    background: rgba(0, 0, 0, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: var(--white);
+    transition: all var(--transition-fast);
+    z-index: 10;
+    backdrop-filter: blur(10px);
+}
+
+.testimonial-sound-toggle:hover {
+    background: rgba(16, 185, 129, 0.3);
+    border-color: var(--primary);
+}
+
+.testimonial-sound-toggle .icon-unmuted {
+    display: none;
+}
+
+.testimonial-sound-toggle.unmuted .icon-muted {
+    display: none;
+}
+
+.testimonial-sound-toggle.unmuted .icon-unmuted {
+    display: block;
+}
+
 .testimonial-info {
     padding: 12px 8px;
     text-align: center;

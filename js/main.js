@@ -97,53 +97,44 @@
     }
 
     // ================================================
-    // Testimonial Videos Play/Pause
+    // Testimonial Videos - Sound Toggle
     // ================================================
     const testimonialCards = document.querySelectorAll('.testimonial-card');
     
     testimonialCards.forEach(card => {
         const video = card.querySelector('video');
-        const playBtn = card.querySelector('.play-testimonial');
+        const soundToggle = card.querySelector('.testimonial-sound-toggle');
         
-        if (video && playBtn) {
-            playBtn.addEventListener('click', function() {
-                if (video.paused) {
-                    // Pause all other testimonial videos
+        if (video && soundToggle) {
+            soundToggle.addEventListener('click', function() {
+                if (video.muted) {
+                    // Mute all other videos first
                     testimonialCards.forEach(otherCard => {
                         const otherVideo = otherCard.querySelector('video');
-                        const otherBtn = otherCard.querySelector('.play-testimonial');
-                        if (otherVideo !== video && !otherVideo.paused) {
-                            otherVideo.pause();
+                        const otherToggle = otherCard.querySelector('.testimonial-sound-toggle');
+                        if (otherVideo !== video) {
                             otherVideo.muted = true;
-                            otherBtn.classList.remove('playing');
+                            if (otherToggle) otherToggle.classList.remove('unmuted');
                         }
                     });
                     
                     video.muted = false;
-                    video.play();
-                    playBtn.classList.add('playing');
+                    soundToggle.classList.add('unmuted');
                 } else {
-                    video.pause();
                     video.muted = true;
-                    playBtn.classList.remove('playing');
+                    soundToggle.classList.remove('unmuted');
                 }
-            });
-            
-            // Show play button again when video ends
-            video.addEventListener('ended', function() {
-                playBtn.classList.remove('playing');
-                video.muted = true;
             });
         }
     });
 
     // ================================================
-    // Auto-play Testimonial Videos on Scroll (staggered)
+    // Auto-play Testimonial Videos on Scroll (staggered, muted)
     // ================================================
     const videoAutoplayObserver = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             const video = entry.target.querySelector('video');
-            const playBtn = entry.target.querySelector('.play-testimonial');
+            const soundToggle = entry.target.querySelector('.testimonial-sound-toggle');
             
             if (entry.isIntersecting && video) {
                 // Small delay based on card index for staggered effect
@@ -153,15 +144,13 @@
                 setTimeout(() => {
                     video.muted = true;
                     video.play().catch(() => {});
-                    if (playBtn) {
-                        playBtn.classList.add('playing');
-                    }
                 }, delay);
             } else if (!entry.isIntersecting && video) {
-                // Pause when out of view
+                // Pause and mute when out of view
                 video.pause();
-                if (playBtn) {
-                    playBtn.classList.remove('playing');
+                video.muted = true;
+                if (soundToggle) {
+                    soundToggle.classList.remove('unmuted');
                 }
             }
         });
