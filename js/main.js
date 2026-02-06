@@ -71,6 +71,20 @@
     const soundToggle = document.getElementById('soundToggle');
     
     if (vslVideo && soundToggle) {
+        // Try to play with sound on load
+        vslVideo.muted = false;
+        soundToggle.classList.add('unmuted');
+        
+        var playPromise = vslVideo.play();
+        if (playPromise !== undefined) {
+            playPromise.catch(function() {
+                // Browser blocked autoplay with sound, fall back to muted
+                vslVideo.muted = true;
+                soundToggle.classList.remove('unmuted');
+                vslVideo.play();
+            });
+        }
+        
         soundToggle.addEventListener('click', function() {
             if (vslVideo.muted) {
                 vslVideo.muted = false;
@@ -122,6 +136,33 @@
             });
         }
     });
+
+    // ================================================
+    // Auto-play First Testimonial Video on Scroll (muted)
+    // ================================================
+    const firstTestimonialCard = document.querySelector('.testimonial-card');
+    
+    if (firstTestimonialCard) {
+        const firstVideo = firstTestimonialCard.querySelector('video');
+        const firstPlayBtn = firstTestimonialCard.querySelector('.play-testimonial');
+        let hasAutoPlayed = false;
+        
+        const videoObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting && !hasAutoPlayed && firstVideo) {
+                    firstVideo.muted = true;
+                    firstVideo.play();
+                    if (firstPlayBtn) {
+                        firstPlayBtn.classList.add('playing');
+                    }
+                    hasAutoPlayed = true;
+                }
+            });
+        }, { threshold: 0.3 });
+        
+        videoObserver.observe(firstTestimonialCard);
+    }
+
 
     // ================================================
     // FAQ Accordion (Optional Enhancement)
