@@ -1019,6 +1019,31 @@ section:not([class]) .leaders-grid {
 }
 
 /* ================================================
+   Section CTA Buttons
+   ================================================ */
+.section-cta {
+    text-align: center;
+    margin-top: 48px;
+}
+
+/* ================================================
+   CTA Price
+   ================================================ */
+.cta-price {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: clamp(2.2rem, 5vw, 3rem);
+    font-weight: 700;
+    color: var(--primary-light);
+    margin-bottom: 8px;
+}
+
+.cta-price-label {
+    font-size: 0.85rem;
+    color: var(--gray);
+    margin-bottom: 32px;
+}
+
+/* ================================================
    CTA Section
    ================================================ */
 .cta-section {
@@ -1181,6 +1206,27 @@ footer a:hover {
 .fade-up.visible {
     opacity: 1;
     transform: translateY(0);
+}
+
+/* Button pulse attention animation */
+@keyframes btn-pulse {
+    0%, 100% {
+        transform: scale(1);
+        box-shadow: 0 4px 20px var(--primary-glow);
+    }
+    50% {
+        transform: scale(1.05);
+        box-shadow: 0 8px 30px rgba(16, 185, 129, 0.45);
+    }
+}
+
+.cta-buttons .btn {
+    animation: btn-pulse 2.5s ease-in-out infinite;
+}
+
+.cta-buttons .btn:hover {
+    animation: none;
+    transform: translateY(-2px);
 }
 
 /* ================================================

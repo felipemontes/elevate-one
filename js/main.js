@@ -88,6 +88,7 @@
         soundToggle.addEventListener('click', function() {
             if (vslVideo.muted) {
                 vslVideo.muted = false;
+                vslVideo.currentTime = 0;
                 soundToggle.classList.add('unmuted');
             } else {
                 vslVideo.muted = true;
@@ -119,6 +120,7 @@
                     });
                     
                     video.muted = false;
+                    video.currentTime = 0;
                     soundToggle.classList.add('unmuted');
                 } else {
                     video.muted = true;
