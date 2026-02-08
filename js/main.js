@@ -52,7 +52,7 @@
             const target = document.querySelector(targetId);
             
             if (target) {
-                const headerOffset = 80;
+                const headerOffset = 20;
                 const elementPosition = target.getBoundingClientRect().top;
                 const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
 
